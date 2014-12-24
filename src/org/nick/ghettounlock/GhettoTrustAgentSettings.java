@@ -19,8 +19,6 @@ package org.nick.ghettounlock;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.usb.UsbAccessory;
-import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.net.wifi.SupplicantState;
@@ -50,7 +48,6 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GhettoTrustAgentSettings extends Activity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, OnItemSelectedListener {
@@ -118,22 +115,6 @@ public class GhettoTrustAgentSettings extends Activity implements View.OnClickLi
         if (pubKey != null) {
             trustedPubKey.setText(hashPubKey(pubKey));
         }
-
-        // XXX
-        Log.d(TAG, "Dumping USB devices...");
-        Map<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-        for (Map.Entry<String, UsbDevice> e : usbDevices.entrySet()) {
-            System.out.println(e.getKey() + " " + e.getValue().getDeviceName());
-        }
-
-        UsbAccessory[] usbAccessories = usbManager.getAccessoryList();
-        if (usbAccessories == null) {
-            return;
-        }
-        for (UsbAccessory ua : usbAccessories) {
-            System.out.println(ua.getDescription());
-        }
-        Log.d(TAG, "Done.");
     }
 
     private static String hashPubKey(RSAPublicKey pubKey) {
@@ -158,8 +139,6 @@ public class GhettoTrustAgentSettings extends Activity implements View.OnClickLi
         for (WifiConfiguration wifi : wifis) {
             ssids.add(wifi.SSID);
         }
-        // XXX
-        ssids.add("\"My Precious WiFi\"");
         ArrayAdapter<String> ssidAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, ssids);
 
